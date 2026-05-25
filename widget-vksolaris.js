@@ -125,7 +125,7 @@
         .q-btn-trigger-ia {
             position: absolute; top: 140px; right: 14px; z-index: 100;
             background: none; border: none; padding: 0; cursor: pointer;
-            width: 90px; height: 90px;
+            width: 75px; height: 75px;
             display: flex; align-items: center; justify-content: center;
             filter: drop-shadow(0 3px 10px rgba(0,0,0,0.22));
             animation: q-shake 3s infinite;
@@ -133,7 +133,7 @@
         }
         .q-btn-trigger-ia:hover { filter: drop-shadow(0 6px 18px rgba(0,0,0,0.32)); }
         .q-btn-trigger-ia img { width: 100%; height: 100%; object-fit: contain; }
-        @media (min-width: 768px) { .q-btn-trigger-ia { width: 120px; height: 120px; top: 180px; right: 22px; } }
+        @media (min-width: 768px) { .q-btn-trigger-ia { width: 90px; height: 90px; top: 180px; right: 18px; } }
 
         /* ── Inline button ── */
         .q-btn-inline-provador {
