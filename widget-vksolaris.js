@@ -1,4 +1,16 @@
 (function () {
+
+    // Rejeita telefone claramente inventado. Aqui a validacao era so tamanho
+    // + DDD, entao 99999999, 5454-5454 e sequencias passavam. Mesmas regras
+    // dos demais widgets da frota.
+    function plTelReal(nums) {
+        var local = nums.length === 11 ? nums.slice(3) : nums.slice(2);
+        if (/^(\d)+$/.test(local)) return false;
+        if (/(\d){5,}/.test(local)) return false;
+        if (new Set(local).size <= 2) return false;
+        if (/^(?:01234567|12345678|23456789|34567890|98765432|87654321|76543210|0123456789|1234567890)/.test(local)) return false;
+        return true;
+    }
     function toJpeg(file){return new Promise(function(res){try{var img=new Image();var u=URL.createObjectURL(file);img.onload=function(){URL.revokeObjectURL(u);var w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;if(!w||!h){res(file);return;}var sc=Math.min(1,1280/Math.max(w,h));var cw=Math.round(w*sc),ch=Math.round(h*sc);var c=document.createElement('canvas');c.width=cw;c.height=ch;c.getContext('2d').drawImage(img,0,0,cw,ch);c.toBlob(function(b){res(b||file);},'image/jpeg',0.92);};img.onerror=function(){URL.revokeObjectURL(u);res(file);};img.src=u;}catch(e){res(file);}});}
 
     if (window.__PL_VKSOLARIS_LOADED__) { console.log('[PL VK Solaris] Widget já carregado — ignorando duplicata.'); return; }
@@ -1413,7 +1425,7 @@
             const _els = document.querySelectorAll('.q-provas-msg');
             if (!_els.length) return;
             const nums = phoneInput.value.replace(/\D/g, '');
-            const phoneOk = (nums.length === 10 || nums.length === 11) && /^[1-9][1-9]/.test(nums) && (nums.length === 10 || nums[2] === '9');
+            const phoneOk = (nums.length === 10 || nums.length === 11) && /^[1-9][1-9]/.test(nums) && (nums.length === 10 || nums[2] === '9') && plTelReal(nums);
             // Phone vazio/incompleto → manda '0' pra pegar só o ip_count.
             const phone = phoneOk ? '55' + nums : '0';
             try {
@@ -1441,7 +1453,7 @@
 
         function checkPhoneStep() {
             const nums = phoneInput.value.replace(/\D/g, '');
-            const phoneOk = (nums.length === 10 || nums.length === 11) && /^[1-9][1-9]/.test(nums) && (nums.length === 10 || nums[2] === '9');
+            const phoneOk = (nums.length === 10 || nums.length === 11) && /^[1-9][1-9]/.test(nums) && (nums.length === 10 || nums[2] === '9') && plTelReal(nums);
             document.getElementById('q-phone-error').style.display = (phoneInput.value.length > 0 && !phoneOk) ? 'block' : 'none';
             phoneInput.style.borderColor = (phoneInput.value.length > 0 && !phoneOk) ? '#ef4444' : 'var(--q-border)';
             checkFields();
@@ -1449,7 +1461,7 @@
 
         function checkFields() {
             const nums = phoneInput.value.replace(/\D/g, '');
-            const phoneOk = (nums.length === 10 || nums.length === 11) && /^[1-9][1-9]/.test(nums) && (nums.length === 10 || nums[2] === '9');
+            const phoneOk = (nums.length === 10 || nums.length === 11) && /^[1-9][1-9]/.test(nums) && (nums.length === 10 || nums[2] === '9') && plTelReal(nums);
             genBtn.disabled = !(userPhoto && phoneOk && document.getElementById('q-accept-terms').checked);
         }
 
