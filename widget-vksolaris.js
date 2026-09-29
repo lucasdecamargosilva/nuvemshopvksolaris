@@ -21,6 +21,15 @@
     const apiKey = "pl_live_18ce00b6b817aa3dfeb7536c857928a3f0232b376f7755053f4d582d65918f1a";
     window.PROVOU_LEVOU_API_KEY = apiKey;
 
+    // Produtos com fotos de referência FIXAS (pedido da loja): manda sempre estas, nesta ordem
+    // (a 1ª é a referência principal), no lugar das fotos da galeria. Casa pelo nome (h1) ou pela URL.
+    var PL_REF_FIXAS = [
+        { nome: /^\s*SOLARIS\s+VERSO\s*$/i, url: /\/produtos\/solaris-verso-87d1x/i, fotos: [
+            'https://acdn-us.mitiendanube.com/stores/006/800/057/products/93bd9c49bd38bdcad0570c12903c9b48-8783e37b8709a762cb17761050415579-1024-1024-14cb173e8dc71b7d2417885248244897-1024-1024.webp',
+            'https://acdn-us.mitiendanube.com/stores/006/800/057/products/213f81d4edb1e72a29f1e86336ad6e9f-b74ab014c8e975211017761050523211-1024-1024-d3ea15f1943b8daaab17885248245176-1024-1024.webp'
+        ] }
+    ];
+
     const WEBHOOK_PROVA = 'https://n8n.segredosdodrop.com/webhook/gerador-oculos';
     const WEBHOOK_PIX = 'https://n8n.segredosdodrop.com/webhook/vksolaris-pix';
     const WEBHOOK_PIX_STATUS = 'https://n8n.segredosdodrop.com/webhook/vksolaris-pix-status';
@@ -1839,6 +1848,11 @@
                             allProdImgs.forEach(_add);
                             allProdImgs = _mix;
                         }
+                    } catch (e) {}
+                    try {
+                        var _nomeProd = (document.querySelector('h1.product__title,.product-single__title,h1') || {}).innerText || '';
+                        var _refFixa = PL_REF_FIXAS.find(function (r) { return r.nome.test(_nomeProd) || r.url.test(location.pathname); });
+                        if (_refFixa) { allProdImgs = _refFixa.fotos.slice(); console.log('[PL VK Solaris] fotos de referência fixas do produto'); }
                     } catch (e) {}
                     allProdImgs = allProdImgs.slice(0, 4);
                     console.log('[PL VK Solaris] Enviando', allProdImgs.length, 'fotos do produto');
